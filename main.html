@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MOAMMEN Cybersecurity Quiz</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 700px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #0f3460 0%, #16213e 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #00d9ff;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .start-screen, .question-screen, .result-screen {
+            text-align: center;
+        }
+
+        .start-screen h2 {
+            color: #16213e;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .start-screen p {
+            color: #666;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .start-screen ul {
+            text-align: left;
+            margin: 0 auto 30px;
+            max-width: 400px;
+            color: #444;
+        }
+
+        .start-screen li {
+            margin-bottom: 12px;
+            padding-left: 10px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #00d9ff 0%, #0099cc 100%);
+            color: white;
+            border: none;
+            padding: 15px 50px;
+            font-size: 18px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-weight: 600;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 217, 255, 0.3);
+        }
+
+        .question-screen {
+            display: none;
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .question-number {
+            color: #00d9ff;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .timer {
+            background: #ff4757;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 18px;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .timer.warning {
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .difficulty-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .difficulty-easy { background: #2ecc71; color: white; }
+        .difficulty-medium { background: #f39c12; color: white; }
+        .difficulty-hard { background: #e74c3c; color: white; }
+        .difficulty-expert { background: #9b59b6; color: white; }
+        .difficulty-advanced { background: #34495e; color: white; }
+
+        .question-text {
+            color: #16213e;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .option {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            padding: 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: left;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .option:hover {
+            border-color: #00d9ff;
+            background: #e3f9ff;
+            transform: translateX(5px);
+        }
+
+        .option.selected {
+            border-color: #00d9ff;
+            background: #00d9ff;
+            color: white;
+        }
+
+        .option.correct {
+            border-color: #2ecc71;
+            background: #2ecc71;
+            color: white;
+        }
+
+        .option.incorrect {
+            border-color: #e74c3c;
+            background: #e74c3c;
+            color: white;
+        }
+
+        .option.disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .result-screen {
+            display: none;
+        }
+
+        .score-circle {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00d9ff 0%, #0099cc 100%);
+            margin: 0 auto 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+
+        .score-number {
+            font-size: 60px;
+            font-weight: bold;
+        }
+
+        .score-total {
+            font-size: 24px;
+            opacity: 0.9;
+        }
+
+        .performance-title {
+            color: #16213e;
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .performance-message {
+            color: #666;
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .cta {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 12px;
+            margin-top: 30px;
+        }
+
+        .cta h3 {
+            color: #16213e;
+            margin-bottom: 10px;
+        }
+
+        .cta p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 600px) {
+            .content {
+                padding: 25px;
+            }
+
+            .header {
+                padding: 20px;
+            }
+
+            .logo {
+                font-size: 22px;
+            }
+
+            .header h1 {
+                font-size: 20px;
+            }
+
+            .question-text {
+                font-size: 18px;
+            }
+
+            .option {
+                padding: 15px;
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">MOAMMEN</div>
+            <h1>Cybersecurity Awareness Challenge</h1>
+            <p>Test your knowledge and strengthen your security skills</p>
+        </div>
+
+        <div class="content">
+            <!-- Start Screen -->
+            <div class="start-screen" id="startScreen">
+                <h2>Ready to Test Your Cybersecurity Knowledge?</h2>
+                <p>This quiz will evaluate your awareness of common cyber threats and security best practices.</p>
+                <ul>
+                    <li>✓ 5 questions with progressive difficulty</li>
+                    <li>✓ 15 seconds per question</li>
+                    <li>✓ Real-world scenarios</li>
+                    <li>✓ Instant feedback on your performance</li>
+                </ul>
+                <button class="btn" onclick="startQuiz()">Start Quiz</button>
+            </div>
+
+            <!-- Question Screen -->
+            <div class="question-screen" id="questionScreen">
+                <div class="question-header">
+                    <span class="question-number" id="questionNumber">Question 1 of 5</span>
+                    <span class="timer" id="timer">15</span>
+                </div>
+                
+                <span class="difficulty-badge" id="difficultyBadge">Easy</span>
+                
+                <div class="question-text" id="questionText"></div>
+                
+                <div class="options" id="optionsContainer"></div>
+            </div>
+
+            <!-- Result Screen -->
+            <div class="result-screen" id="resultScreen">
+                <div class="score-circle" id="scoreCircle">
+                    <div class="score-number" id="scoreNumber">0</div>
+                    <div class="score-total">/ 100</div>
+                </div>
+                
+                <h2 class="performance-title" id="performanceTitle"></h2>
+                <p class="performance-message" id="performanceMessage"></p>
+                
+                <div class="cta">
+                    <h3>🛡️ Elevate Your Organization's Security</h3>
+                    <p>Discover how MOAMMEN can transform your team's cybersecurity awareness through engaging, interactive training.</p>
+                    <button class="btn" onclick="restartQuiz()">Take Quiz Again</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                difficulty: "Easy",
+                difficultyClass: "difficulty-easy",
+                question: "You receive an email from 'support@paypa1.com' asking you to verify your account. What should you do?",
+                options: [
+                    "Click the link and enter your credentials immediately",
+                    "Check if the email address is legitimate and report it as phishing",
+                    "Forward it to all colleagues to warn them",
+                    "Reply with your account information to verify"
+                ],
+                correct: 1,
+                explanation: "The email uses '1' instead of 'l' in PayPal - a common phishing tactic. Always verify sender authenticity."
+            },
+            {
+                difficulty: "Medium",
+                difficultyClass: "difficulty-medium",
+                question: "Which password is the MOST secure?",
+                options: [
+                    "Password123!",
+                    "MyDog2024",
+                    "T9$mK#pL2@xQ8nR",
+                    "Welcome2024!"
+                ],
+                correct: 2,
+                explanation: "A strong password uses a mix of uppercase, lowercase, numbers, and special characters with no dictionary words."
+            },
+            {
+                difficulty: "Hard",
+                difficultyClass: "difficulty-hard",
+                question: "A person claiming to be from IT calls and asks for your password to 'fix a system issue'. What is this?",
+                options: [
+                    "Standard IT procedure for urgent fixes",
+                    "Social engineering attack - legitimate IT never asks for passwords",
+                    "A security audit to test employee awareness",
+                    "Normal remote support protocol"
+                ],
+                correct: 1,
+                explanation: "This is social engineering. Legitimate IT staff will never ask for your password over the phone or email."
+            },
+            {
+                difficulty: "Expert",
+                difficultyClass: "difficulty-expert",
+                question: "You notice unusual network activity at 3 AM from a colleague's account who is on vacation. What should you do FIRST?",
+                options: [
+                    "Wait until they return to ask them about it",
+                    "Immediately report to the security team as a potential breach",
+                    "Log into their account to investigate",
+                    "Send them an email to check if they're working remotely"
+                ],
+                correct: 1,
+                explanation: "Unusual activity during vacation could indicate compromised credentials. Immediate reporting enables quick containment."
+            },
+            {
+                difficulty: "Advanced",
+                difficultyClass: "difficulty-advanced",
+                question: "Your company uses MFA. A pop-up requests authentication approval but you didn't initiate login. What is happening?",
+                options: [
+                    "It's a system glitch, approve it to continue working",
+                    "Someone is attempting to access your account - deny and report immediately",
+                    "It's an automated security check, always approve these",
+                    "The IT team is testing security, approve it"
+                ],
+                correct: 1,
+                explanation: "This is an MFA fatigue attack. Attackers try stolen credentials hoping you'll approve. Never approve unexpected MFA requests."
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let timeLeft = 15;
+        let timerInterval;
+        let answered = false;
+
+        function startQuiz() {
+            document.getElementById('startScreen').style.display = 'none';
+            document.getElementById('questionScreen').style.display = 'block';
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            answered = false;
+            timeLeft = 15;
+            
+            const q = questions[currentQuestion];
+            document.getElementById('questionNumber').textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
+            document.getElementById('difficultyBadge').textContent = q.difficulty;
+            document.getElementById('difficultyBadge').className = `difficulty-badge ${q.difficultyClass}`;
+            document.getElementById('questionText').textContent = q.question;
+            
+            const optionsContainer = document.getElementById('optionsContainer');
+            optionsContainer.innerHTML = '';
+            
+            q.options.forEach((option, index) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'option';
+                optionDiv.textContent = option;
+                optionDiv.onclick = () => selectAnswer(index);
+                optionsContainer.appendChild(optionDiv);
+            });
+            
+            startTimer();
+        }
+
+        function startTimer() {
+            const timerEl = document.getElementById('timer');
+            timerEl.textContent = timeLeft;
+            timerEl.classList.remove('warning');
+            
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                timerEl.textContent = timeLeft;
+                
+                if (timeLeft <= 5) {
+                    timerEl.classList.add('warning');
+                }
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    if (!answered) {
+                        showCorrectAnswer();
+                    }
+                }
+            }, 1000);
+        }
+
+        function selectAnswer(selectedIndex) {
+            if (answered) return;
+            
+            answered = true;
+            clearInterval(timerInterval);
+            
+            const q = questions[currentQuestion];
+            const options = document.querySelectorAll('.option');
+            
+            options.forEach(opt => opt.classList.add('disabled'));
+            
+            if (selectedIndex === q.correct) {
+                options[selectedIndex].classList.add('correct');
+                score += 20;
+            } else {
+                options[selectedIndex].classList.add('incorrect');
+                options[q.correct].classList.add('correct');
+            }
+            
+            setTimeout(() => {
+                currentQuestion++;
+                if (currentQuestion < questions.length) {
+                    loadQuestion();
+                } else {
+                    showResults();
+                }
+            }, 2500);
+        }
+
+        function showCorrectAnswer() {
+            answered = true;
+            const q = questions[currentQuestion];
+            const options = document.querySelectorAll('.option');
+            
+            options.forEach(opt => opt.classList.add('disabled'));
+            options[q.correct].classList.add('correct');
+            
+            setTimeout(() => {
+                currentQuestion++;
+                if (currentQuestion < questions.length) {
+                    loadQuestion();
+                } else {
+                    showResults();
+                }
+            }, 2500);
+        }
+
+        function showResults() {
+            document.getElementById('questionScreen').style.display = 'none';
+            document.getElementById('resultScreen').style.display = 'block';
+            
+            document.getElementById('scoreNumber').textContent = score;
+            
+            const scoreCircle = document.getElementById('scoreCircle');
+            let title, message;
+            
+            if (score >= 80) {
+                title = "Cybersecurity Expert! 🏆";
+                message = "Outstanding! Your awareness is exceptional. You understand advanced security concepts and can identify sophisticated threats. You're a valuable asset to any security-conscious organization.";
+                scoreCircle.style.background = "linear-gradient(135deg, #2ecc71 0%, #27ae60 100%)";
+            } else if (score >= 60) {
+                title = "Strong Knowledge! 💪";
+                message = "Great job! You have a solid foundation in cybersecurity awareness. Minor gaps remain, but with focused training, you'll reach expert level.";
+                scoreCircle.style.background = "linear-gradient(135deg, #f39c12 0%, #e67e22 100%)";
+            } else if (score >= 40) {
+                title = "Good Foundation! 📚";
+                message = "You understand basic security concepts, but there's room for improvement. Regular training will help you recognize more sophisticated threats and protect your organization better.";
+                scoreCircle.style.background = "linear-gradient(135deg, #3498db 0%, #2980b9 100%)";
+            } else {
+                title = "Training Essential! 🚨";
+                message = "Your current awareness level puts your organization at high risk. Comprehensive cybersecurity training is crucial to protect against modern threats. MOAMMEN can help bridge these critical knowledge gaps.";
+                scoreCircle.style.background = "linear-gradient(135deg, #e74c3c 0%, #c0392b 100%)";
+            }
+            
+            document.getElementById('performanceTitle').textContent = title;
+            document.getElementById('performanceMessage').textContent = message;
+        }
+
+        function restartQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            document.getElementById('resultScreen').style.display = 'none';
+            document.getElementById('startScreen').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
