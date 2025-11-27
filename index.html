@@ -14,11 +14,12 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            min-height: 100vh;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 0;
+            overflow: hidden;
         }
 
         .container {
@@ -27,81 +28,129 @@
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             max-width: 700px;
             width: 100%;
+            height: 90vh;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
         }
 
         .header {
             background: linear-gradient(135deg, #0f3460 0%, #16213e 100%);
             color: white;
-            padding: 30px;
+            padding: 20px;
             text-align: center;
         }
 
         .logo {
-            font-size: 28px;
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #00d9ff;
+            margin-bottom: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 40px;
+            width: auto;
         }
 
         .header h1 {
-            font-size: 24px;
-            margin-bottom: 8px;
+            font-size: 20px;
+            margin-bottom: 5px;
         }
 
         .header p {
-            font-size: 14px;
+            font-size: 13px;
             opacity: 0.9;
         }
 
         .content {
-            padding: 40px;
+            padding: 30px 25px;
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
-        .start-screen, .question-screen, .result-screen {
+        .content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .content::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        .content::-webkit-scrollbar-thumb {
+            background: #00d9ff;
+            border-radius: 4px;
+        }
+
+        .content::-webkit-scrollbar-thumb:hover {
+            background: #0099cc;
+        }
+
+        .start-screen {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .question-screen, .result-screen {
             text-align: center;
         }
 
         .start-screen h2 {
             color: #16213e;
-            font-size: 28px;
-            margin-bottom: 20px;
+            font-size: 26px;
+            margin-bottom: 10px;
+            font-weight: 700;
         }
 
         .start-screen p {
             color: #666;
-            font-size: 16px;
-            line-height: 1.6;
-            margin-bottom: 30px;
+            font-size: 15px;
+            line-height: 1.4;
+            margin-bottom: 20px;
         }
 
         .start-screen ul {
             text-align: left;
-            margin: 0 auto 30px;
-            max-width: 400px;
+            margin: 0 auto 25px;
+            max-width: 450px;
             color: #444;
+            font-size: 15px;
+            line-height: 1.8;
         }
 
         .start-screen li {
-            margin-bottom: 12px;
-            padding-left: 10px;
+            margin-bottom: 10px;
+            padding-left: 5px;
         }
 
         .btn {
             background: linear-gradient(135deg, #00d9ff 0%, #0099cc 100%);
             color: white;
             border: none;
-            padding: 15px 50px;
-            font-size: 18px;
+            padding: 14px 50px;
+            font-size: 17px;
             border-radius: 50px;
             cursor: pointer;
             transition: transform 0.2s, box-shadow 0.2s;
             font-weight: 600;
+            margin-top: 5px;
         }
 
         .btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 25px rgba(0, 217, 255, 0.3);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #DC143C 0%, #B01030 100%);
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 10px 25px rgba(220, 20, 60, 0.3);
         }
 
         .question-screen {
@@ -112,23 +161,23 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
         .question-number {
             color: #00d9ff;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 600;
         }
 
         .timer {
-            background: #ff4757;
+            background: #DC143C;
             color: white;
-            padding: 10px 20px;
+            padding: 8px 18px;
             border-radius: 50px;
             font-weight: 600;
-            font-size: 18px;
-            min-width: 80px;
+            font-size: 16px;
+            min-width: 70px;
             text-align: center;
         }
 
@@ -141,45 +190,33 @@
             50% { transform: scale(1.05); }
         }
 
-        .difficulty-badge {
-            display: inline-block;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            margin-bottom: 15px;
-        }
-
-        .difficulty-easy { background: #2ecc71; color: white; }
-        .difficulty-medium { background: #f39c12; color: white; }
-        .difficulty-hard { background: #e74c3c; color: white; }
-        .difficulty-expert { background: #9b59b6; color: white; }
-        .difficulty-advanced { background: #34495e; color: white; }
-
         .question-text {
             color: #16213e;
-            font-size: 20px;
+            font-size: 17px;
             font-weight: 600;
-            margin-bottom: 30px;
+            margin-bottom: 18px;
             line-height: 1.5;
+            text-align: left;
         }
 
         .options {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 10px;
+            margin-bottom: 15px;
         }
 
         .option {
             background: #f8f9fa;
             border: 2px solid #e9ecef;
-            padding: 20px;
-            border-radius: 12px;
+            padding: 12px 14px;
+            border-radius: 10px;
             cursor: pointer;
             transition: all 0.3s;
             text-align: left;
-            font-size: 16px;
+            font-size: 14px;
             color: #333;
+            line-height: 1.4;
         }
 
         .option:hover {
@@ -201,8 +238,8 @@
         }
 
         .option.incorrect {
-            border-color: #e74c3c;
-            background: #e74c3c;
+            border-color: #DC143C;
+            background: #DC143C;
             color: white;
         }
 
@@ -216,11 +253,11 @@
         }
 
         .score-circle {
-            width: 200px;
-            height: 200px;
+            width: 140px;
+            height: 140px;
             border-radius: 50%;
             background: linear-gradient(135deg, #00d9ff 0%, #0099cc 100%);
-            margin: 0 auto 30px;
+            margin: 0 auto 15px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -229,44 +266,47 @@
         }
 
         .score-number {
-            font-size: 60px;
+            font-size: 44px;
             font-weight: bold;
         }
 
         .score-total {
-            font-size: 24px;
+            font-size: 18px;
             opacity: 0.9;
         }
 
         .performance-title {
             color: #16213e;
-            font-size: 32px;
+            font-size: 22px;
             font-weight: bold;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
 
         .performance-message {
             color: #666;
-            font-size: 18px;
-            line-height: 1.6;
-            margin-bottom: 30px;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 15px;
         }
 
         .cta {
             background: #f8f9fa;
-            padding: 25px;
+            padding: 15px;
             border-radius: 12px;
-            margin-top: 30px;
+            margin-top: 15px;
         }
 
         .cta h3 {
             color: #16213e;
-            margin-bottom: 10px;
+            margin-bottom: 6px;
+            font-size: 15px;
         }
 
         .cta p {
             color: #666;
-            margin-bottom: 20px;
+            margin-bottom: 12px;
+            font-size: 13px;
+            line-height: 1.4;
         }
 
         .hidden {
@@ -274,29 +314,94 @@
         }
 
         @media (max-width: 600px) {
-            .content {
-                padding: 25px;
+            body {
+                padding: 10px;
             }
 
-            .header {
+            .container {
+                height: 95vh;
+                border-radius: 15px;
+            }
+
+            .content {
                 padding: 20px;
             }
 
-            .logo {
-                font-size: 22px;
+            .header {
+                padding: 15px;
+            }
+
+            .logo img {
+                height: 35px;
             }
 
             .header h1 {
-                font-size: 20px;
-            }
-
-            .question-text {
                 font-size: 18px;
             }
 
+            .header p {
+                font-size: 12px;
+            }
+
+            .start-screen h2 {
+                font-size: 22px;
+            }
+
+            .start-screen p {
+                font-size: 14px;
+            }
+
+            .start-screen ul {
+                font-size: 14px;
+            }
+
+            .question-text {
+                font-size: 16px;
+                margin-bottom: 20px;
+            }
+
             .option {
+                padding: 12px;
+                font-size: 14px;
+            }
+
+            .btn {
+                padding: 12px 35px;
+                font-size: 16px;
+            }
+
+            .score-circle {
+                width: 130px;
+                height: 130px;
+                margin-bottom: 15px;
+            }
+
+            .score-number {
+                font-size: 42px;
+            }
+
+            .score-total {
+                font-size: 18px;
+            }
+
+            .performance-title {
+                font-size: 20px;
+            }
+
+            .performance-message {
+                font-size: 14px;
+            }
+
+            .cta {
                 padding: 15px;
+            }
+
+            .cta h3 {
                 font-size: 15px;
+            }
+
+            .cta p {
+                font-size: 13px;
             }
         }
     </style>
@@ -304,7 +409,9 @@
 <body>
     <div class="container">
         <div class="header">
-            <div class="logo">MOAMMEN</div>
+            <div class="logo">
+                <img src="https://www.aman.com.sa/wp-content/uploads/2024/10/MOAMMEN.png" alt="MOAMMEN">
+            </div>
             <h1>Cybersecurity Awareness Challenge</h1>
             <p>Test your knowledge and strengthen your security skills</p>
         </div>
@@ -320,7 +427,7 @@
                     <li>✓ Real-world scenarios</li>
                     <li>✓ Instant feedback on your performance</li>
                 </ul>
-                <button class="btn" onclick="startQuiz()">Start Quiz</button>
+                <button class="btn btn-primary" onclick="startQuiz()">Start Quiz</button>
             </div>
 
             <!-- Question Screen -->
@@ -329,8 +436,6 @@
                     <span class="question-number" id="questionNumber">Question 1 of 5</span>
                     <span class="timer" id="timer">15</span>
                 </div>
-                
-                <span class="difficulty-badge" id="difficultyBadge">Easy</span>
                 
                 <div class="question-text" id="questionText"></div>
                 
@@ -350,7 +455,7 @@
                 <div class="cta">
                     <h3>🛡️ Elevate Your Organization's Security</h3>
                     <p>Discover how MOAMMEN can transform your team's cybersecurity awareness through engaging, interactive training.</p>
-                    <button class="btn" onclick="restartQuiz()">Take Quiz Again</button>
+                    <button class="btn btn-primary" onclick="window.location.href='https://www.aman.com.sa/moammen/'">Learn More About MOAMMEN</button>
                 </div>
             </div>
         </div>
@@ -359,69 +464,59 @@
     <script>
         const questions = [
             {
-                difficulty: "Easy",
-                difficultyClass: "difficulty-easy",
-                question: "You receive an email from 'support@paypa1.com' asking you to verify your account. What should you do?",
+                question: "You receive an email from your CEO's actual email address requesting an urgent wire transfer to a new vendor. The email tone and signature match perfectly. What is the FIRST action you should take?",
                 options: [
-                    "Click the link and enter your credentials immediately",
-                    "Check if the email address is legitimate and report it as phishing",
-                    "Forward it to all colleagues to warn them",
-                    "Reply with your account information to verify"
+                    "Process the transfer immediately since it's from the verified CEO email",
+                    "Call the CEO using a known phone number to verbally confirm before proceeding",
+                    "Reply to the email asking for confirmation",
+                    "Forward to finance department to handle the transfer"
                 ],
                 correct: 1,
-                explanation: "The email uses '1' instead of 'l' in PayPal - a common phishing tactic. Always verify sender authenticity."
+                explanation: "Email spoofing and compromised accounts can display legitimate addresses. Always verify high-risk requests through a secondary channel using known contact information, not reply methods."
             },
             {
-                difficulty: "Medium",
-                difficultyClass: "difficulty-medium",
-                question: "Which password is the MOST secure?",
+                question: "An attacker sends a perfectly crafted phishing email that passes SPF, DKIM, and DMARC checks. Which technique are they MOST likely using?",
                 options: [
-                    "Password123!",
-                    "MyDog2024",
-                    "T9$mK#pL2@xQ8nR",
-                    "Welcome2024!"
-                ],
-                correct: 2,
-                explanation: "A strong password uses a mix of uppercase, lowercase, numbers, and special characters with no dictionary words."
-            },
-            {
-                difficulty: "Hard",
-                difficultyClass: "difficulty-hard",
-                question: "A person claiming to be from IT calls and asks for your password to 'fix a system issue'. What is this?",
-                options: [
-                    "Standard IT procedure for urgent fixes",
-                    "Social engineering attack - legitimate IT never asks for passwords",
-                    "A security audit to test employee awareness",
-                    "Normal remote support protocol"
+                    "Domain spoofing with similar characters (typosquatting)",
+                    "Compromised legitimate email account within your organization's domain",
+                    "DNS cache poisoning",
+                    "Man-in-the-middle attack on email servers"
                 ],
                 correct: 1,
-                explanation: "This is social engineering. Legitimate IT staff will never ask for your password over the phone or email."
+                explanation: "When all authentication protocols pass, the attacker likely compromised a legitimate account. Typosquatting would fail DMARC checks from the real domain."
             },
             {
-                difficulty: "Expert",
-                difficultyClass: "difficulty-expert",
-                question: "You notice unusual network activity at 3 AM from a colleague's account who is on vacation. What should you do FIRST?",
+                question: "You notice a login attempt notification from a familiar location and device, but with slightly different browser fingerprint. You didn't initiate this. What is MOST likely happening?",
                 options: [
-                    "Wait until they return to ask them about it",
-                    "Immediately report to the security team as a potential breach",
-                    "Log into their account to investigate",
-                    "Send them an email to check if they're working remotely"
+                    "Browser update changed the fingerprint automatically",
+                    "Session hijacking or cookie theft from your device",
+                    "VPN causing fingerprint variations",
+                    "Normal behavior from browser privacy features"
                 ],
                 correct: 1,
-                explanation: "Unusual activity during vacation could indicate compromised credentials. Immediate reporting enables quick containment."
+                explanation: "Attackers who steal session cookies can bypass passwords but can't perfectly replicate browser fingerprints. Same location/device with wrong fingerprint indicates session hijacking."
             },
             {
-                difficulty: "Advanced",
-                difficultyClass: "difficulty-advanced",
-                question: "Your company uses MFA. A pop-up requests authentication approval but you didn't initiate login. What is happening?",
+                question: "An email contains a QR code for 'mandatory security training.' Scanning it opens your company's authentic-looking SSO page. What sophisticated attack is this?",
                 options: [
-                    "It's a system glitch, approve it to continue working",
-                    "Someone is attempting to access your account - deny and report immediately",
-                    "It's an automated security check, always approve these",
-                    "The IT team is testing security, approve it"
+                    "Standard phishing using fake login page",
+                    "Quishing (QR phishing) possibly combined with adversary-in-the-middle",
+                    "Legitimate security training with poor communication",
+                    "Malware deployment through QR code"
                 ],
                 correct: 1,
-                explanation: "This is an MFA fatigue attack. Attackers try stolen credentials hoping you'll approve. Never approve unexpected MFA requests."
+                explanation: "QR codes bypass email security filters. Even if the page looks authentic, it could be an AitM proxy capturing credentials in real-time while passing them to the real service."
+            },
+            {
+                question: "You receive a Microsoft Teams message from your IT department with a link to 'update security settings.' The account shows verified badge. Best approach?",
+                options: [
+                    "Click the link since the verified badge confirms authenticity",
+                    "Check if the account is in your organization's directory and verify through another channel",
+                    "Ignore it completely as IT never uses Teams",
+                    "Report immediately without verification"
+                ],
+                correct: 1,
+                explanation: "Verified badges can be spoofed or accounts compromised. Always verify through organizational directory and secondary communication channel before clicking links, even from seemingly verified sources."
             }
         ];
 
@@ -443,8 +538,6 @@
             
             const q = questions[currentQuestion];
             document.getElementById('questionNumber').textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
-            document.getElementById('difficultyBadge').textContent = q.difficulty;
-            document.getElementById('difficultyBadge').className = `difficulty-badge ${q.difficultyClass}`;
             document.getElementById('questionText').textContent = q.question;
             
             const optionsContainer = document.getElementById('optionsContainer');
@@ -554,7 +647,7 @@
             } else {
                 title = "Training Essential! 🚨";
                 message = "Your current awareness level puts your organization at high risk. Comprehensive cybersecurity training is crucial to protect against modern threats. MOAMMEN can help bridge these critical knowledge gaps.";
-                scoreCircle.style.background = "linear-gradient(135deg, #e74c3c 0%, #c0392b 100%)";
+                scoreCircle.style.background = "linear-gradient(135deg, #DC143C 0%, #B01030 100%)";
             }
             
             document.getElementById('performanceTitle').textContent = title;
