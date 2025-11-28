@@ -14,12 +14,11 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 0;
-            overflow: hidden;
+            padding: 10px;
         }
 
         .container {
@@ -28,7 +27,7 @@
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             max-width: 700px;
             width: 100%;
-            height: 90vh;
+            max-height: 90vh;
             overflow: hidden;
             display: flex;
             flex-direction: column;
@@ -206,7 +205,7 @@
             line-height: 1.4;
         }
 
-        .option:hover {
+        .option:hover:not(.disabled) {
             border-color: #00d9ff;
             background: #e3f9ff;
             transform: translateX(5px);
@@ -295,17 +294,139 @@
             font-size: 13px;
         }
 
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: white;
+            margin: 5% auto;
+            padding: 0;
+            border-radius: 20px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow: hidden;
+            animation: slideUp 0.3s;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            padding: 25px;
+            text-align: center;
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .modal-header.correct {
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+        }
+
+        .modal-header.incorrect {
+            background: linear-gradient(135deg, #DC143C 0%, #B01030 100%);
+        }
+
+        .modal-header.timeout {
+            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+        }
+
+        .modal-body {
+            padding: 25px;
+            max-height: 50vh;
+            overflow-y: auto;
+        }
+
+        .modal-body::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .modal-body::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        .modal-body::-webkit-scrollbar-thumb {
+            background: #00d9ff;
+            border-radius: 3px;
+        }
+
+        .correct-answer {
+            background: #e8f8f5;
+            border-left: 4px solid #2ecc71;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            font-weight: 600;
+            color: #16213e;
+        }
+
+        .explanation {
+            color: #555;
+            line-height: 1.7;
+            font-size: 15px;
+        }
+
+        .modal-footer {
+            padding: 20px 25px;
+            text-align: center;
+            border-top: 1px solid #eee;
+        }
+
+        .btn-next {
+            background: linear-gradient(135deg, #00d9ff 0%, #0099cc 100%);
+            color: white;
+            border: none;
+            padding: 14px 45px;
+            font-size: 16px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-weight: 600;
+        }
+
+        .btn-next:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 217, 255, 0.3);
+        }
+
         .hidden {
             display: none;
         }
 
+        /* Responsive Design */
         @media (max-width: 600px) {
             body {
                 padding: 5px;
             }
 
             .container {
-                height: 96vh;
+                max-height: 95vh;
                 border-radius: 12px;
             }
 
@@ -426,6 +547,41 @@
                 margin-bottom: 10px;
                 line-height: 1.3;
             }
+
+            .modal-content {
+                margin: 10% auto;
+                width: 95%;
+                max-height: 85vh;
+            }
+
+            .modal-header {
+                padding: 20px;
+                font-size: 22px;
+            }
+
+            .modal-body {
+                padding: 20px;
+                max-height: 55vh;
+            }
+
+            .explanation {
+                font-size: 14px;
+                line-height: 1.6;
+            }
+
+            .correct-answer {
+                padding: 12px;
+                font-size: 14px;
+            }
+
+            .modal-footer {
+                padding: 15px 20px;
+            }
+
+            .btn-next {
+                padding: 12px 35px;
+                font-size: 15px;
+            }
         }
     </style>
 </head>
@@ -445,10 +601,10 @@
                 <h2>Ready to Test Your Cybersecurity Knowledge?</h2>
                 <p>This quiz will evaluate your awareness of common cyber threats and security best practices.</p>
                 <ul>
-                    <li>✓ 5 questions with progressive difficulty</li>
+                    <li>✓ 5 random questions from a pool of 15</li>
                     <li>✓ 15 seconds per question</li>
                     <li>✓ Real-world scenarios</li>
-                    <li>✓ Instant feedback on your performance</li>
+                    <li>✓ Instant feedback with explanations</li>
                 </ul>
                 <button class="btn btn-primary" onclick="startQuiz()">Start Quiz</button>
             </div>
@@ -484,72 +640,217 @@
         </div>
     </div>
 
+    <!-- Feedback Modal -->
+    <div id="feedbackModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header" id="modalHeader">Great!</div>
+            <div class="modal-body">
+                <div class="correct-answer" id="correctAnswerDiv"></div>
+                <div class="explanation" id="modalExplanation"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-next" onclick="nextQuestion()">Next Question</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        const questions = [
+        // All 15 questions pool
+        const allQuestions = [
             {
-                question: "You receive an email from your CEO's actual email address requesting an urgent wire transfer to a new vendor. The email tone and signature match perfectly. What is the FIRST action you should take?",
+                question: 'What does "p=quarantine" in a DMARC policy instruct receiving servers to do?',
                 options: [
-                    "Process the transfer immediately since it's from the verified CEO email",
-                    "Call the CEO using a known phone number to verbally confirm before proceeding",
-                    "Reply to the email asking for confirmation",
-                    "Forward to finance department to handle the transfer"
+                    "Delete the email immediately",
+                    "Mark the email as spam/junk",
+                    "Bounce back to sender",
+                    "Forward to security team"
                 ],
                 correct: 1,
-                explanation: "Email spoofing and compromised accounts can display legitimate addresses. Always verify high-risk requests through a secondary channel using known contact information, not reply methods."
+                explanation: "The 'p=quarantine' policy tells receiving mail servers to treat suspicious emails (that fail DMARC checks) as potentially dangerous and place them in the spam/junk folder rather than the inbox, giving users a chance to review them."
             },
             {
-                question: "An attacker sends a perfectly crafted phishing email that passes SPF, DKIM, and DMARC checks. Which technique are they MOST likely using?",
+                question: "Which HTTP header is most commonly abused in phishing attacks to disguise the actual sender domain?",
                 options: [
-                    "Domain spoofing with similar characters (typosquatting)",
-                    "Compromised legitimate email account within your organization's domain",
-                    "DNS cache poisoning",
-                    "Man-in-the-middle attack on email servers"
+                    "X-Originating-IP",
+                    "Reply-To",
+                    "X-Mailer",
+                    "Content-Type"
                 ],
                 correct: 1,
-                explanation: "When all authentication protocols pass, the attacker likely compromised a legitimate account. Typosquatting would fail DMARC checks from the real domain."
+                explanation: "The 'Reply-To' header is frequently manipulated by attackers because it's easy to set to any address, and when victims hit 'reply,' their response goes to the attacker's address instead of the apparent sender."
             },
             {
-                question: "You notice a login attempt notification from a familiar location and device, but with slightly different browser fingerprint. You didn't initiate this. What is MOST likely happening?",
+                question: 'What vulnerability does "thread hijacking" exploit?',
                 options: [
-                    "Browser update changed the fingerprint automatically",
-                    "Session hijacking or cookie theft from your device",
-                    "VPN causing fingerprint variations",
-                    "Normal behavior from browser privacy features"
+                    "Weak passwords",
+                    "Trust in existing email conversations",
+                    "Unencrypted connections",
+                    "Missing antivirus"
                 ],
                 correct: 1,
-                explanation: "Attackers who steal session cookies can bypass passwords but can't perfectly replicate browser fingerprints. Same location/device with wrong fingerprint indicates session hijacking."
+                explanation: "Thread hijacking exploits human trust by inserting malicious emails into existing conversation threads. Recipients are more likely to trust and click on links when they appear to be part of an ongoing legitimate discussion."
             },
             {
-                question: "An email contains a QR code for 'mandatory security training.' Scanning it opens your company's authentic-looking SSO page. What sophisticated attack is this?",
+                question: 'What does the "Reply-To" header in an email do?',
                 options: [
-                    "Standard phishing using fake login page",
-                    "Quishing (QR phishing) possibly combined with adversary-in-the-middle",
-                    "Legitimate security training with poor communication",
-                    "Malware deployment through QR code"
+                    "Shows who sent the email",
+                    "Specifies where replies should be sent",
+                    "Indicates email priority",
+                    "Encrypts the reply"
                 ],
                 correct: 1,
-                explanation: "QR codes bypass email security filters. Even if the page looks authentic, it could be an AitM proxy capturing credentials in real-time while passing them to the real service."
+                explanation: "The Reply-To header tells email clients where to send responses. This can differ from the 'From' address, which attackers exploit by setting Reply-To to their own addresses while spoofing the From field."
             },
             {
-                question: "You receive a Microsoft Teams message from your IT department with a link to 'update security settings.' The account shows verified badge. Best approach?",
+                question: 'In email headers, what does a mismatched "Received-SPF" and "Authentication-Results" most likely suggest?',
                 options: [
-                    "Click the link since the verified badge confirms authenticity",
-                    "Check if the account is in your organization's directory and verify through another channel",
-                    "Ignore it completely as IT never uses Teams",
-                    "Report immediately without verification"
+                    "Server misconfiguration",
+                    "Spoofing attempt",
+                    "Load balancing",
+                    "Encryption failure"
                 ],
                 correct: 1,
-                explanation: "Verified badges can be spoofed or accounts compromised. Always verify through organizational directory and secondary communication channel before clicking links, even from seemingly verified sources."
+                explanation: "When SPF results and authentication results don't align, it often indicates someone is trying to send email pretending to be from a domain they don't control - a classic spoofing attempt."
+            },
+            {
+                question: 'What is "OAuth consent phishing" designed to steal?',
+                options: [
+                    "Email passwords",
+                    "Application permissions and access tokens",
+                    "Browser cookies",
+                    "Two-factor authentication codes"
+                ],
+                correct: 1,
+                explanation: "OAuth consent phishing tricks users into granting malicious applications access to their accounts. Instead of stealing passwords, attackers gain legitimate access tokens with whatever permissions the user approved."
+            },
+            {
+                question: 'What does "living off the land" mean in a cyber attack context?',
+                options: [
+                    "Physical security breaches",
+                    "Using legitimate system tools for malicious purposes",
+                    "Attacking rural infrastructure",
+                    "Offline attack methods"
+                ],
+                correct: 1,
+                explanation: "Living off the land (LOLBins) refers to attackers using built-in, trusted system tools (like PowerShell, cmd.exe) to conduct attacks, making detection harder since these tools are normally present and used legitimately."
+            },
+            {
+                question: "What is the main security risk of SVG files in emails?",
+                options: [
+                    "Large file size",
+                    "Can contain embedded JavaScript code",
+                    "Poor image quality",
+                    "Compatibility issues"
+                ],
+                correct: 1,
+                explanation: "SVG files are XML-based and can contain embedded JavaScript that executes when opened, potentially leading to cross-site scripting (XSS) attacks or other malicious activities without requiring user interaction beyond viewing."
+            },
+            {
+                question: "What does SPF (Sender Policy Framework) verify?",
+                options: [
+                    "Email content is encrypted",
+                    "Authorized mail servers for a domain",
+                    "Attachment safety",
+                    "Recipient identity"
+                ],
+                correct: 1,
+                explanation: "SPF is a DNS-based email authentication method that specifies which mail servers are authorized to send email on behalf of a domain, helping prevent email spoofing."
+            },
+            {
+                question: "Which SPF mechanism allows a domain to authorize any IP address?",
+                options: [
+                    "~all",
+                    "+all",
+                    "?all",
+                    "-all"
+                ],
+                correct: 1,
+                explanation: "The '+all' mechanism in SPF means 'pass all,' effectively authorizing any server to send email for the domain. This completely defeats the purpose of SPF and should never be used in production."
+            },
+            {
+                question: 'What does "homograph attack" exploit?',
+                options: [
+                    "Similar writing styles",
+                    "Visually similar characters from different alphabets",
+                    "Graph-based network topology",
+                    "Social media profiles"
+                ],
+                correct: 1,
+                explanation: "Homograph attacks use characters from different alphabets (like Cyrillic 'а' vs Latin 'a') that look identical to create fake domains that appear legitimate to human eyes, such as 'аpple.com' instead of 'apple.com'."
+            },
+            {
+                question: 'What is "SMTP smuggling"?',
+                options: [
+                    "Stealing SMTP credentials",
+                    "Exploiting interpretation differences between mail servers",
+                    "Bypassing firewall ports",
+                    "Encrypting SMTP traffic"
+                ],
+                correct: 1,
+                explanation: "SMTP smuggling exploits how different mail servers interpret end-of-data sequences differently, allowing attackers to hide malicious commands or content that one server ignores but another processes."
+            },
+            {
+                question: 'What information does the "Received" header chain in an email reveal?',
+                options: [
+                    "Who read the email",
+                    "The path through mail servers the email took",
+                    "Attachment details",
+                    "Email recipients list"
+                ],
+                correct: 1,
+                explanation: "The Received headers form a chronological chain showing every mail server that handled the email from sender to recipient, useful for tracing email origins and identifying routing anomalies."
+            },
+            {
+                question: 'What does "quishing" refer to?',
+                options: [
+                    "Quick phishing attacks",
+                    "Phishing using QR codes",
+                    "Quiet network infiltration",
+                    "Question-based social engineering"
+                ],
+                correct: 1,
+                explanation: "Quishing (QR code phishing) uses QR codes to direct victims to malicious websites. QR codes bypass traditional email security filters that scan URLs, as the malicious link is encoded in an image."
+            },
+            {
+                question: "What's the primary reason attackers use punycode in phishing URLs?",
+                options: [
+                    "Faster DNS resolution",
+                    "Bypass email filters",
+                    "Visual domain spoofing",
+                    "Encrypt the payload"
+                ],
+                correct: 2,
+                explanation: "Punycode allows international characters in domain names. Attackers use it for visual spoofing, creating domains that look legitimate in browsers (showing 'аpple.com') but are actually different domains in punycode (xn--pple-43d.com)."
             }
         ];
 
+        let questions = [];
         let currentQuestion = 0;
         let score = 0;
         let timeLeft = 15;
         let timerInterval;
         let answered = false;
 
+        // Shuffle array function
+        function shuffleArray(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+
+        // Select 5 random questions
+        function selectRandomQuestions() {
+            const shuffled = shuffleArray(allQuestions);
+            questions = shuffled.slice(0, 5);
+        }
+
         function startQuiz() {
+            selectRandomQuestions();
+            currentQuestion = 0;
+            score = 0;
             document.getElementById('startScreen').style.display = 'none';
             document.getElementById('questionScreen').style.display = 'block';
             loadQuestion();
@@ -610,7 +911,9 @@
             
             options.forEach(opt => opt.classList.add('disabled'));
             
-            if (selectedIndex === q.correct) {
+            let isCorrect = selectedIndex === q.correct;
+            
+            if (isCorrect) {
                 options[selectedIndex].classList.add('correct');
                 score += 20;
             } else {
@@ -618,14 +921,7 @@
                 options[q.correct].classList.add('correct');
             }
             
-            setTimeout(() => {
-                currentQuestion++;
-                if (currentQuestion < questions.length) {
-                    loadQuestion();
-                } else {
-                    showResults();
-                }
-            }, 2500);
+            setTimeout(() => showFeedbackModal(isCorrect, false), 800);
         }
 
         function showCorrectAnswer() {
@@ -636,53 +932,97 @@
             options.forEach(opt => opt.classList.add('disabled'));
             options[q.correct].classList.add('correct');
             
-            setTimeout(() => {
+            setTimeout(() => showFeedbackModal(false, true), 800);
+        }
+
+                function showFeedbackModal(isCorrect, isTimeout) {
+            const modal = document.getElementById('feedbackModal');
+            const modalHeader = document.getElementById('modalHeader');
+            const modalExplanation = document.getElementById('modalExplanation');
+            const correctAnswerDiv = document.getElementById('correctAnswerDiv');
+            
+            const q = questions[currentQuestion];
+            const correctAnswerText = q.options[q.correct];
+            
+            if (isCorrect) {
+                modalHeader.textContent = '✓ Great!';
+                modalHeader.className = 'modal-header correct';
+                correctAnswerDiv.innerHTML = `<strong>Correct Answer:</strong> ${correctAnswerText}`;
+            } else if (isTimeout) {
+                modalHeader.textContent = '⏱️ Time\'s Up!';
+                modalHeader.className = 'modal-header timeout';
+                correctAnswerDiv.innerHTML = `<strong>Correct Answer:</strong> ${correctAnswerText}`;
+            } else {
+                modalHeader.textContent = '✗ Incorrect';
+                modalHeader.className = 'modal-header incorrect';
+                correctAnswerDiv.innerHTML = `<strong>Correct Answer:</strong> ${correctAnswerText}`;
+            }
+            
+            modalExplanation.textContent = q.explanation;
+            modal.style.display = 'block';
+            
+            // Change button text for last question
+            const nextBtn = modal.querySelector('.btn-next');
+            if (currentQuestion === questions.length - 1) {
+                nextBtn.textContent = 'See Results';
+            } else {
+                nextBtn.textContent = 'Next Question';
+            }
+        }
+
+        function nextQuestion() {
+            document.getElementById('feedbackModal').style.display = 'none';
+            
+            if (currentQuestion < questions.length - 1) {
                 currentQuestion++;
-                if (currentQuestion < questions.length) {
-                    loadQuestion();
-                } else {
-                    showResults();
-                }
-            }, 2500);
+                loadQuestion();
+            } else {
+                showResults();
+            }
         }
 
         function showResults() {
             document.getElementById('questionScreen').style.display = 'none';
             document.getElementById('resultScreen').style.display = 'block';
             
-            document.getElementById('scoreNumber').textContent = score;
-            
+            const scoreNumber = document.getElementById('scoreNumber');
+            const performanceTitle = document.getElementById('performanceTitle');
+            const performanceMessage = document.getElementById('performanceMessage');
             const scoreCircle = document.getElementById('scoreCircle');
-            let title, message;
             
+            scoreNumber.textContent = score;
+            
+            // Set performance message based on score
             if (score >= 80) {
-                title = "Cybersecurity Expert! 🏆";
-                message = "Outstanding! Your awareness is exceptional. You understand advanced security concepts and can identify sophisticated threats. You're a valuable asset to any security-conscious organization.";
-                scoreCircle.style.background = "linear-gradient(135deg, #2ecc71 0%, #27ae60 100%)";
+                performanceTitle.textContent = 'Excellent!';
+                performanceMessage.textContent = 'You have strong cybersecurity awareness and can identify most common threats. Keep up the great work!';
+                scoreCircle.style.background = 'linear-gradient(135deg, #2ecc71 0%, #27ae60 100%)';
             } else if (score >= 60) {
-                title = "Strong Knowledge! 💪";
-                message = "Great job! You have a solid foundation in cybersecurity awareness. Minor gaps remain, but with focused training, you'll reach expert level.";
-                scoreCircle.style.background = "linear-gradient(135deg, #f39c12 0%, #e67e22 100%)";
+                performanceTitle.textContent = 'Good Job!';
+                performanceMessage.textContent = 'You have a good understanding of cybersecurity basics, but there\'s room for improvement in spotting sophisticated attacks.';
+                scoreCircle.style.background = 'linear-gradient(135deg, #00d9ff 0%, #0099cc 100%)';
             } else if (score >= 40) {
-                title = "Good Foundation! 📚";
-                message = "You understand basic security concepts, but there's room for improvement. Regular training will help you recognize more sophisticated threats and protect your organization better.";
-                scoreCircle.style.background = "linear-gradient(135deg, #3498db 0%, #2980b9 100%)";
+                performanceTitle.textContent = 'Not Bad';
+                performanceMessage.textContent = 'You have some cybersecurity knowledge, but you should focus on learning more about common attack methods and prevention.';
+                scoreCircle.style.background = 'linear-gradient(135deg, #f39c12 0%, #e67e22 100%)';
             } else {
-                title = "Training Essential! 🚨";
-                message = "Your current awareness level puts your organization at high risk. Comprehensive cybersecurity training is crucial to protect against modern threats. MOAMMEN can help bridge these critical knowledge gaps.";
-                scoreCircle.style.background = "linear-gradient(135deg, #DC143C 0%, #B01030 100%)";
+                performanceTitle.textContent = 'Needs Improvement';
+                performanceMessage.textContent = 'Cybersecurity threats are evolving rapidly. Consider taking security awareness training to better protect yourself and your organization.';
+                scoreCircle.style.background = 'linear-gradient(135deg, #DC143C 0%, #B01030 100%)';
             }
-            
-            document.getElementById('performanceTitle').textContent = title;
-            document.getElementById('performanceMessage').textContent = message;
         }
 
-        function restartQuiz() {
-            currentQuestion = 0;
-            score = 0;
-            document.getElementById('resultScreen').style.display = 'none';
-            document.getElementById('startScreen').style.display = 'block';
+        // Close modal if clicked outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('feedbackModal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
         }
+
+        // Initialize the quiz
+        document.addEventListener('DOMContentLoaded', function() {
+            // Any initialization code can go here
+        });
     </script>
 </body>
-</html>
